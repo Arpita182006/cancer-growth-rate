@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Growth Rate Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="hero">
+        <div>
+            <p class="tag">MACHINE LEARNING PROJECT</p>
+            <h1>Cancer Growth Rate<br><span>Prediction System</span></h1>
+            <p class="subtitle">
+                Enter patient information to estimate the tumor growth rate
+                using the trained machine learning model.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        {% if model_error %}
+        <div class="notice">{{ model_error }}</div>
+        {% endif %}
+
+        <form method="POST" class="card">
+            <h2>Patient Information</h2>
+
+            <div class="grid">
+                <div class="field">
+                    <label>Age</label>
+                    <input type="number" name="age" min="1" max="120" required>
+                </div>
+
+                <div class="field">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="">Select</option>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Previous Tumor Size</label>
+                    <input type="number" name="previous_tumor_size" step="0.01" min="0" required>
+                    <small>Use the same unit used during model training.</small>
+                </div>
+
+                <div class="field">
+                    <label>Time Since Diagnosis</label>
+                    <input type="number" name="time_since_diagnosis" min="0" required>
+                    <small>Enter the value in the same unit as the dataset.</small>
+                </div>
+
+                <div class="field">
+                    <label>Cancer Stage</label>
+                    <select name="stage" required>
+                        <option value="">Select stage</option>
+                        <option value="1">Stage I</option>
+                        <option value="2">Stage II</option>
+                        <option value="3">Stage III</option>
+                        <option value="4">Stage IV</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Genetic Risk</label>
+                    <select name="genetic_risk" required>
+                        <option value="">Select</option>
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Smoking History</label>
+                    <select name="smoking" required>
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Alcohol Consumption</label>
+                    <select name="alcohol" required>
+                        <option value="">Select</option>
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>BMI</label>
+                    <input type="number" name="bmi" step="0.01" min="0" required>
+                </div>
+            </div>
+
+            <h2 class="section-title">Treatment Information</h2>
+
+            <div class="treatments">
+                <label class="check">
+                    <input type="checkbox" name="treatment_chemo" value="1">
+                    <span>Chemotherapy</span>
+                </label>
+
+                <label class="check">
+                    <input type="checkbox" name="treatment_radio" value="1">
+                    <span>Radiotherapy</span>
+                </label>
+
+                <label class="check">
+                    <input type="checkbox" name="treatment_surgery" value="1">
+                    <span>Surgery</span>
+                </label>
+            </div>
+
+            <button type="submit">Predict Tumor Growth Rate</button>
+        </form>
+
+        {% if prediction is not none %}
+        <section class="result">
+            <p class="result-label">PREDICTION RESULT</p>
+            <div class="number">{{ prediction }}</div>
+            <h2>Estimated Tumor Growth Rate</h2>
+            <p>This value is generated by the trained machine learning model.</p>
+        </section>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <p class="disclaimer">
+            This project is for educational and research demonstration purposes.
+            It is not a medical diagnostic tool and should not replace advice from a qualified healthcare professional.
+        </p>
+    </main>
+</body>
+</html>
